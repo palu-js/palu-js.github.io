@@ -6,11 +6,18 @@
     <title>palu集团</title>
     <style>
         /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             padding: 0;
             font-family: 'Microsoft YaHei', sans-serif;
             overflow-x: hidden;
+            position: relative;
         }
         
         /* 导航栏容器 */
@@ -32,7 +39,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 200px; /* 固定左侧宽度 */
+            min-width: 200px;
             padding-left: 5%;
         }
         
@@ -49,17 +56,17 @@
             white-space: nowrap;
         }
         
-        /* 导航链接容器 - 关键修改部分 */
+        /* 导航链接容器 */
         .nav-container {
             display: flex;
-            flex: 1; /* 占据剩余空间 */
+            flex: 1;
             justify-content: center;
         }
         
         .nav-links {
             display: flex;
             width: 100%;
-            max-width: 800px; /* 控制最大宽度 */
+            max-width: 800px;
         }
         
         /* 平均分配导航项 */
@@ -70,7 +77,7 @@
             position: relative;
             padding: 10px 0;
             transition: all 0.3s;
-            flex: 1; /* 关键：均分空间 */
+            flex: 1;
             text-align: center;
         }
         
@@ -109,6 +116,147 @@
             background: white;
             margin: 5px 0;
             transition: all 0.3s;
+        }
+        
+        /* 全屏背景样式 */
+        @keyframes hueRotate {
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
+            animation: hueRotate 5s infinite alternate;
+            z-index: -1;
+        }
+        
+        /* 主要内容区域 */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        /* 轮播图容器 */
+        .slider-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 500px;
+            transform: translateX(0);
+        }
+        
+        .slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .slide-content h2 {
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        
+        .slide-content a {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .slide-content a:hover {
+            background: #ff8e8e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* 导航按钮 */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+        
+        .slider-nav button {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            margin: 0 20px;
+        }
+        
+        .slider-nav button:hover {
+            background: rgba(255,255,255,0.5);
+        }
+        
+        /* 指示器 */
+        .slider-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
         }
         
         /* 移动端样式 */
@@ -161,19 +309,36 @@
                 padding: 15px 0;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
-        }
-
-        /* 内容区域 */
-        @keyframes hueRotate {
-            100% { filter: hue-rotate(360deg); }
-        }
-        
-        .header {
-            background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
-            animation: hueRotate 5s infinite alternate;
-            height: 100vh;
-            width: 100vw;
-            margin-top: 70px;
+            
+            main {
+                padding-top: 70px;
+            }
+            
+            .slider-container {
+                margin: 0 auto 20px;
+                border-radius: 0;
+                box-shadow: none;
+                height: 300px;
+            }
+            
+            .slider {
+                height: 200px;
+				width: 200px;
+            }
+            
+            .slide-content {
+                padding: 15px;
+            }
+            
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .slider-nav button {
+                width: 40px;
+                height: 40px;
+                margin: 0 10px;
+            }
         }
     </style>
 </head>
@@ -181,7 +346,7 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <img src="palu.jpg" alt="palu logo" class="logo">
+            <img src="images/palu.jpg" alt="palu logo" class="logo">
             <span class="logo-text">palu</span>
         </div>
         
@@ -202,26 +367,79 @@
             </div>
         </div>
     </nav>
-
+    
+    <!-- 主要内容区域 -->
+    <main>
+        <!-- 轮播图容器 -->
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <!-- 轮播项1 -->
+                <div class="slide">
+                    <img src="lite.png" alt="lite">
+                    <div class="slide-content">
+                        <h2>lite应用签名</h2>
+                    </div>
+                </div>
+                
+                <!-- 轮播项2 -->
+                <div class="slide">
+                    <img src="ide.png" alt="ide">
+                    <div class="slide-content">
+                        <h2>ide配置与部署</h2>
+                    </div>
+                </div>
+                
+                <!-- 轮播项3 -->
+                <div class="slide">
+                    <img src="html.png" alt="web">
+                    <div class="slide-content">
+                        <h2>web页面开发</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="slider-nav">
+                <button id="prevBtn">❮</button>
+                <button id="nextBtn">❯</button>
+            </div>
+            
+            <!-- 指示器 -->
+            <div class="slider-indicators" id="indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 全屏背景 -->
     <div class="header"></div>
-
+    
     <script>
-        // 移动端菜单切换
         const hamburger = document.getElementById('hamburger');
         const navContainer = document.getElementById('navContainer');
+        const slider = document.getElementById('slider');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicators = document.getElementById('indicators').children;
+        let currentIndex = 0;
+        const slideCount = document.querySelectorAll('.slide').length;
+        let autoSlideInterval; 
         
+        // 导航菜单切换
         hamburger.addEventListener('click', () => {
             navContainer.classList.toggle('active');
             hamburger.classList.toggle('active');
         });
         
-        // 滚动效果
+        // 滚动时导航栏颜色变化
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
             navbar.style.backgroundColor = window.scrollY > 50 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.7)';
         });
         
-        // 点击菜单项后自动关闭（移动端）
+        // 移动端点击导航链接后关闭菜单
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
@@ -230,7 +448,99 @@
                 }
             });
         });
+        
+        // 窗口大小变化时重置导航状态
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navContainer.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+        
+        // 轮播图功能
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            for (let i = 0; i < indicators.length; i++) {
+                indicators[i].classList.toggle('active', i === currentIndex);
+            }
+        }
+        
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slideCount;
+            updateSlider();
+            resetAutoSlide();
+        }
+        
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+            updateSlider();
+            resetAutoSlide();
+        }
+        
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+        
+        // 指示器点击事件
+        for (let i = 0; i < indicators.length; i++) {
+            indicators[i].addEventListener('click', () => {
+                currentIndex = i;
+                updateSlider();
+                resetAutoSlide();
+            });
+        }
+        
+        // 按钮事件
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // 鼠标悬停暂停自动播放
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        
+        slider.addEventListener('mouseleave', startAutoSlide);
+        
+        // 触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(autoSlideInterval);
+        });
+        
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoSlide();
+        });
+        
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (diff > 50) { // 向左滑动
+                nextSlide();
+            } else if (diff < -50) { // 向右滑动
+                prevSlide();
+            }
+        }
+        
+        // 页面可见性控制
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(autoSlideInterval);
+            } else {
+                startAutoSlide();
+            }
+        });
+        
+        // 初始化自动播放
+        startAutoSlide();
     </script>
 </body>
 </html>
-
