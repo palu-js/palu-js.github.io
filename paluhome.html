@@ -2,29 +2,138 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>palu集团</title>
     <style>
-		body {
+        body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            font-family: 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            background-color: rgba(0,0,0,0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo {
+            height: 40px;
+            margin-left: 5%;
+            transition: transform 0.3s;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 0 5%;
+        }
+        
+        .nav-links {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            justify-content: space-between;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #ffcc00;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffcc00;
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a:hover::after {
+            width: 80%;
         }
         @keyframes hueRotate {
-            100% {
-                filter: hue-rotate(360deg);
-            }
-		}
+            100% { filter: hue-rotate(360deg); }
+        }
+        
         .header {
             background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
             animation: hueRotate 5s infinite alternate;
             height: 100vh;
             width: 100vw;
+            margin-top: 70px;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px 0;
+            }
+            .logo {
+                margin: 10px 0;
+				border-radius: 15px; 
+                width: 80px;        
+                height: 80px;
+                object-fit: cover;
+            }
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                padding: 10px 0;
+            }
+            
+            .nav-links a {
+                width: 100%;
+                padding: 8px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-      this is palu
-</div>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <img src="palu.jpg" alt="palu logo" class="logo">
+		<text style="font-size: 36px;">palu</text>
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="/">主页</a>
+                <a href="/tutorial">教程</a>
+                <a href="/news">新闻</a>
+                <a href="/about">关于</a>
+            </div>
+        </div>
+</nav>
+    <div class="header"></div>
+
+<script>
+        // 滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            navbar.style.backgroundColor = window.scrollY > 50 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.7)';
+        });
+    </script>
 </body>
 </html>
+
