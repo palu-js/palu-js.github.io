@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>palu集团</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* 导航栏容器 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            background-color: rgba(0,0,0,0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+        
+        /* 左侧logo区域 */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            padding-left: 5%;
+        }
+        
+        .logo {
+            height: 40px;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        /* 导航链接容器 */
+        .nav-container {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        /* 平均分配导航项 */
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 10px 0;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #ffcc00;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+        
+        .nav-links a:hover::after {
+            width: 60%;
+        }
+        
+        /* 汉堡菜单按钮 - 移动端 */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 5%;
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+        
+        /* 全屏背景样式 */
+        @keyframes hueRotate {
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
+            animation: hueRotate 5s infinite alternate;
+            z-index: -1;
+        }
+        
+        /* 主要内容区域 */
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 120px 5% 50px;
+            min-height: calc(100vh - 100px);
+            color: #333;
+        }
+        
+        /* 人物介绍区块 */
+        .people-section {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .person-block {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .person-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .text-col {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+        }
+        
+        .image-col {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        h3 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .person-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .person-image:hover {
+            transform: scale(1.03);
+        }
+        
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            .navbar {
+                justify-content: space-between;
+                padding: 10px 0;
+            }
+            
+            .logo-container {
+                min-width: auto;
+                padding-left: 5%;
+            }
+            
+            .logo {
+                height: 35px;
+            }
+            
+            .logo-text {
+                font-size: 1.3rem;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-container {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(0,0,0,0.9);
+                backdrop-filter: blur(10px);
+                height: calc(100vh - 70px);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .nav-container.active {
+                transform: translateX(0);
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                max-width: 100%;
+                padding: 20px 0;
+            }
+            
+            .nav-links a {
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .content {
+                padding: 90px 15px 30px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            
+            .person-block {
+                padding: 20px;
+            }
+            
+            .person-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .text-col, .image-col {
+                min-width: 100%;
+            }
+            
+            h3 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="C:\Users\15197\Desktop\palu.jpg" alt="palu logo" class="logo">
+            <span class="logo-text">palu</span>
+        </div>
+        
+        <!-- 汉堡菜单按钮 -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <!-- 导航链接容器 -->
+        <div class="nav-container" id="navContainer">
+            <div class="nav-links">
+                <a href="paluhome.html">主页</a>
+                <a href="">教程</a>
+                <a href="/news">新闻</a>
+                <a href="about.html">关于</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主要内容区域 -->
+    <div class="content">
+        <h1>人物介绍</h1>
+        <div class="people-section">
+            <div class="person-block">
+                <div class="person-row">
+                    <div class="text-col">
+                        <h3>palu</h3>
+                        <p>会签名，会做一些简单的lite-js应用，会web页面的设计与开发（3997256875）</p>
+                    </div>
+                    <div class="image-col">
+                        <img src="palu.jpg" alt="palu" class="person-image">
+                    </div>
+                </div>
+            </div>
+           <div class="people-section">
+            <div class="person-block">
+                <div class="person-row">
+                    <div class="text-col">
+                        <h3>small palu</h3>
+                        <p>会签名，palu的好朋友（505638144）</p>
+                    </div>
+                    <div class="image-col">
+                        <img src="small.jpg" alt="palu" class="person-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+			<div class="person-block">
+                <div class="person-row">
+                    <div class="text-col">
+                        <h3>龙</h3>
+                        <p>会签名，喜欢为FIT3适配应用（1649535604）</p>
+                    </div>
+                    <div class="image-col">
+                        <img src="long.jpg" alt="palu" class="person-image">
+                    </div>
+                </div>
+            </div>
+			<div class="person-block">
+                <div class="person-row">
+                    <div class="text-col">
+                        <h3>anan</h3>
+                        <p>一个神秘的人，似乎很聪明（1704058329）</p>
+                    </div>
+                    <div class="image-col">
+                        <img src="anan.jpg" alt="palu" class="person-image">
+                    </div>
+                </div>
+            </div>
+			<div class="person-block">
+                <div class="person-row">
+                    <div class="text-col">
+                        <h3>爱摸鱼的渔夫</h3>
+                        <p>会做主题......（993663109）</p>
+                    </div>
+                    <div class="image-col">
+                        <img src="yufu.jpg" alt="palu" class="person-image">
+                    </div>
+                </div>
+            </div>
+    </div>
+	</div>
+    
+    <!-- 全屏背景 -->
+    <div class="header"></div>
+    
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navContainer = document.getElementById('navContainer');
+        
+        // 导航菜单切换
+        hamburger.addEventListener('click', () => {
+            navContainer.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+        
+        // 滚动时导航栏颜色变化
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            navbar.style.backgroundColor = window.scrollY > 50 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.7)';
+        });
+        
+        // 移动端点击导航链接后关闭菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navContainer.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+        
+        // 窗口大小变化时重置导航状态
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navContainer.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
