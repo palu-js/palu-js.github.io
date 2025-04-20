@@ -18,6 +18,8 @@
             font-family: 'Microsoft YaHei', sans-serif;
             overflow-x: hidden;
             position: relative;
+            background: #0a0a0a;
+            color: white;
         }
         
         /* 导航栏容器 */
@@ -25,13 +27,14 @@
             display: flex;
             align-items: center;
             padding: 15px 0;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0,0,0,0.9);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(5px);
             transition: all 0.3s;
+            border-bottom: 1px solid rgba(255,204,0,0.2);
         }
         
         /* 左侧logo区域 */
@@ -50,10 +53,11 @@
         }
         
         .logo-text {
-            color: white;
+            color: #ffcc00;
             font-size: 1.5rem;
             font-weight: bold;
             white-space: nowrap;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
         }
         
         /* 导航链接容器 */
@@ -95,6 +99,7 @@
         
         .nav-links a:hover {
             color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
         }
         
         .nav-links a:hover::after {
@@ -132,6 +137,7 @@
             background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
             animation: hueRotate 5s infinite alternate;
             z-index: -1;
+            opacity: 0.1;
         }
         
         /* 主要内容区域 */
@@ -142,123 +148,252 @@
             min-height: 100vh;
         }
         
-        /* 轮播图容器 */
-        .slider-container {
+        /* 三张图片切换区域 - 顶部 */
+        .gallery-section {
+            max-width: 1400px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
             position: relative;
-            max-width: 1000px;
-            margin: 0 auto 50px;
+        }
+
+        .gallery-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gallery-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+        }
+
+        .gallery-container {
+            position: relative;
+            height: 600px;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .slider {
-            display: flex;
-            transition: transform 0.5s ease;
-            height: 500px;
-            transform: translateX(0);
+
+        .gallery-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(30px) scale(0.95);
+            will-change: transform, opacity;
         }
-        
-        .slide {
-            min-width: 100%;
-            position: relative;
+
+        .gallery-slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 1;
         }
-        
-        .slide img {
+
+        .gallery-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
+            filter: brightness(0.8);
+            transition: all 0.5s ease-out;
         }
-        
+
         .slide-content {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 50px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             color: white;
-            padding: 30px;
+        }
+
+        .slide-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .slide-content p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 25px;
+        }
+
+        .gallery-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,204,0,0.2);
+            border: 2px solid rgba(255,204,0,0.5);
+            color: #ffcc00;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .gallery-btn:hover {
+            background: rgba(255,204,0,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(255,204,0,0.3);
+        }
+
+        .gallery-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .gallery-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .gallery-indicator.active {
+            background: #ffcc00;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        /* 单张图片容器 - 底部 */
+        .hero-container {
+            max-width: 1400px;
+            margin: 100px auto;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .hero-image {
+            position: relative;
+            height: 700px;
+            overflow: hidden;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: brightness(0.8);
+        }
+        
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 80px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: white;
             text-align: center;
         }
         
-        .slide-content h2 {
-            margin-bottom: 15px;
-            font-size: 2rem;
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            color: #ffcc00;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
         }
         
-        .slide-content a {
-            display: inline-block;
-            padding: 10px 25px;
-            background: #ff6b6b;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s;
+        .hero-content p {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
         
-        .slide-content a:hover {
-            background: #ff8e8e;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        /* 鼠标悬停图片放大效果 */
+        .hero-image:hover img,
+        .gallery-slide:hover img {
+            transform: scale(1.05);
+            filter: brightness(1);
         }
-        
-        /* 导航按钮 */
-        .slider-nav {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-        
-        .slider-nav button {
-            background: rgba(255,255,255,0.3);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
+
+        /* 悬浮返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
+            background: rgba(255,204,0,0.2);
+            backdrop-filter: blur(5px);
+            color: #ffcc00;
+            border: 2px solid rgba(255,204,0,0.5);
             font-size: 1.5rem;
             cursor: pointer;
-            backdrop-filter: blur(5px);
+            opacity: 0;
             transition: all 0.3s;
-            margin: 0 20px;
-        }
-        
-        .slider-nav button:hover {
-            background: rgba(255,255,255,0.5);
-        }
-        
-        /* 指示器 */
-        .slider-indicators {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            z-index: 99;
             display: flex;
-            gap: 10px;
-            z-index: 10;
+            align-items: center;
+            justify-content: center;
         }
         
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: all 0.3s;
+        .back-to-top.visible {
+            opacity: 1;
         }
         
-        .indicator.active {
-            background: white;
-            transform: scale(1.2);
+        .back-to-top:hover {
+            background: rgba(255,204,0,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(255,204,0,0.3);
         }
-        
+
+        /* 页面加载进度条 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #ffcc00;
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
         /* 移动端样式 */
         @media (max-width: 768px) {
             .navbar {
@@ -288,11 +423,12 @@
                 top: 70px;
                 left: 0;
                 width: 100%;
-                background: rgba(0,0,0,0.9);
+                background: rgba(0,0,0,0.95);
                 backdrop-filter: blur(10px);
                 height: calc(100vh - 70px);
                 transform: translateX(100%);
                 transition: transform 0.3s ease;
+                border-top: 1px solid rgba(255,204,0,0.2);
             }
             
             .nav-container.active {
@@ -306,7 +442,7 @@
             }
             
             .nav-links a {
-                padding: 15px 0;
+                padding: 20px 0;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
             
@@ -314,34 +450,73 @@
                 padding-top: 70px;
             }
             
-            .slider-container {
-                margin: 0 auto 20px;
+            .gallery-section {
+                margin-bottom: 50px;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+
+            .gallery-container {
+                height: 400px;
                 border-radius: 0;
-                box-shadow: none;
-                height: 300px;
             }
-            
-            .slider {
-                height: 300px;
-            }
-            
+
             .slide-content {
-                padding: 15px;
+                padding: 30px;
+            }
+
+            .slide-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+
+            .gallery-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .hero-container {
+                margin: 50px auto;
+                border-radius: 0;
             }
             
-            .slide-content h2 {
-                font-size: 1.5rem;
+            .hero-image {
+                height: 500px;
             }
             
-            .slider-nav button {
-                width: 40px;
-                height: 40px;
-                margin: 0 10px;
+            .hero-content {
+                padding: 30px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.3rem;
+            }
+
+            .back-to-top {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 30px;
+                right: 30px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 页面加载进度条 -->
+    <div class="progress-bar"></div>
+
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
@@ -369,45 +544,60 @@
     
     <!-- 主要内容区域 -->
     <main>
-        <!-- 轮播图容器 -->
-        <div class="slider-container">
-            <div class="slider" id="slider">
-                <!-- 轮播项1 -->
-                <div class="slide">
-                    <img src="lite.png" alt="lite应用签名">
+        <!-- 三张图片切换区域 - 顶部 -->
+        <section class="gallery-section">
+            <h2 class="gallery-title">我们的核心服务</h2>
+            <div class="gallery-container">
+                <!-- 第一张图片 -->
+                <div class="gallery-slide active">
+                    <img src="lite.png" alt="应用签名服务">
                     <div class="slide-content">
-                        <h2>lite应用签名</h2>
+                        <h3>应用签名服务</h3>
+                        <p>专业的应用签名服务，解决你的应用问题</p>
                     </div>
                 </div>
                 
-                <!-- 轮播项2 -->
-                <div class="slide">
-                    <img src="ide.png" alt="ide配置与部署">
+                <!-- 第二张图片 -->
+                <div class="gallery-slide">
+                    <img src="ide.png" alt="开发环境配置">
                     <div class="slide-content">
-                        <h2>ide配置与部署</h2>
+                        <h3>开发环境配置</h3>
+                        <p>ide环境配置，降低签名难度</p>
                     </div>
                 </div>
                 
-                <!-- 轮播项3 -->
-                <div class="slide">
-                    <img src="html.png" alt="web开发与搭建">
+                <!-- 第三张图片 -->
+                <div class="gallery-slide">
+                    <img src="html.png" alt="Web解决方案">
                     <div class="slide-content">
-                        <h2>web开发与搭建</h2>
+                        <h3>Web解决方案</h3>
+                        <p>Web开发与设计，打造卓越用户体验</p>
                     </div>
                 </div>
             </div>
             
             <!-- 导航按钮 -->
-            <div class="slider-nav">
-                <button id="prevBtn">❮</button>
-                <button id="nextBtn">❯</button>
+            <div class="gallery-nav">
+                <button class="gallery-btn" id="prevGalleryBtn">❮</button>
+                <button class="gallery-btn" id="nextGalleryBtn">❯</button>
             </div>
             
             <!-- 指示器 -->
-            <div class="slider-indicators" id="indicators">
-                <div class="indicator active"></div>
-                <div class="indicator"></div>
-                <div class="indicator"></div>
+            <div class="gallery-indicators" id="galleryIndicators">
+                <div class="gallery-indicator active"></div>
+                <div class="gallery-indicator"></div>
+                <div class="gallery-indicator"></div>
+            </div>
+        </section>
+
+        <!-- 单张图片展示 - 底部 -->
+        <div class="hero-container">
+            <div class="hero-image">
+                <img src="palu.jpg" alt="Palu集团主视觉图">
+                <div class="hero-content">
+                    <h1>palu to the moon</h1>
+                    <p>探索前沿技术，引领数字未来</p>
+                </div>
             </div>
         </div>
     </main>
@@ -415,18 +605,30 @@
     <!-- 全屏背景 -->
     <div class="header"></div>
     
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top">↑</button>
+    
     <script>
+        // 页面加载进度条
+        window.addEventListener('load', function() {
+            const progressBar = document.querySelector('.progress-bar');
+            let width = 0;
+            const interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    progressBar.style.opacity = '0';
+                    setTimeout(() => progressBar.remove(), 300);
+                } else {
+                    width += 1;
+                    progressBar.style.width = width + '%';
+                }
+            }, 10);
+        });
+
+        // 导航菜单切换
         const hamburger = document.getElementById('hamburger');
         const navContainer = document.getElementById('navContainer');
-        const slider = document.getElementById('slider');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const indicators = document.getElementById('indicators').children;
-        let currentIndex = 0;
-        const slideCount = document.querySelectorAll('.slide').length;
-        let autoSlideInterval; 
         
-        // 导航菜单切换
         hamburger.addEventListener('click', () => {
             navContainer.classList.toggle('active');
             hamburger.classList.toggle('active');
@@ -435,7 +637,34 @@
         // 滚动时导航栏颜色变化
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
-            navbar.style.backgroundColor = window.scrollY > 50 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.7)';
+            navbar.style.backgroundColor = window.scrollY > 50 ? 'rgba(0,0,0,0.95)' : 'rgba(0,0,0,0.9)';
+            
+            // 返回顶部按钮显示/隐藏
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            
+            // 视觉差效果 - 主图
+            const heroImage = document.querySelector('.hero-image img');
+            const scrollPosition = window.pageYOffset;
+            heroImage.style.transform = `scale(${1 + scrollPosition * 0.0005})`;
+            
+            // 视觉差效果 - 画廊图片
+            const gallerySlides = document.querySelectorAll('.gallery-slide img');
+            gallerySlides.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                const speed = 0.1;
+                const offset = (window.innerHeight - rect.top) * speed;
+                img.style.transform = `translateY(${offset}px)`;
+            });
+        });
+        
+        // 返回顶部按钮点击事件
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
         });
         
         // 移动端点击导航链接后关闭菜单
@@ -455,92 +684,82 @@
                 hamburger.classList.remove('active');
             }
         });
-        
-        // 轮播图功能
-        function updateSlider() {
-            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-            for (let i = 0; i < indicators.length; i++) {
-                indicators[i].classList.toggle('active', i === currentIndex);
-            }
-        }
-        
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % slideCount;
-            updateSlider();
-            resetAutoSlide();
-        }
-        
-        function prevSlide() {
-            currentIndex = (currentIndex - 1 + slideCount) % slideCount;
-            updateSlider();
-            resetAutoSlide();
-        }
-        
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(nextSlide, 5000);
-        }
-        
-        function resetAutoSlide() {
-            clearInterval(autoSlideInterval);
-            startAutoSlide();
-        }
-        
-        // 指示器点击事件
-        for (let i = 0; i < indicators.length; i++) {
-            indicators[i].addEventListener('click', () => {
-                currentIndex = i;
-                updateSlider();
-                resetAutoSlide();
+
+        // 三张图片切换功能
+        const gallerySlides = document.querySelectorAll('.gallery-slide');
+        const prevGalleryBtn = document.getElementById('prevGalleryBtn');
+        const nextGalleryBtn = document.getElementById('nextGalleryBtn');
+        const galleryIndicators = document.getElementById('galleryIndicators').children;
+        let currentGalleryIndex = 0;
+
+        function updateGallery() {
+            gallerySlides.forEach((slide, index) => {
+                if (index === currentGalleryIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            Array.from(galleryIndicators).forEach((indicator, index) => {
+                if (index === currentGalleryIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
             });
         }
-        
-        // 按钮事件
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-        
-        // 鼠标悬停暂停自动播放
-        slider.addEventListener('mouseenter', () => {
-            clearInterval(autoSlideInterval);
-        });
-        
-        slider.addEventListener('mouseleave', startAutoSlide);
-        
-        // 触摸滑动支持
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        slider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            clearInterval(autoSlideInterval);
-        });
-        
-        slider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-            startAutoSlide();
-        });
-        
-        function handleSwipe() {
-            const diff = touchStartX - touchEndX;
-            if (diff > 50) { // 向左滑动
-                nextSlide();
-            } else if (diff < -50) { // 向右滑动
-                prevSlide();
-            }
+
+        function nextGallerySlide() {
+            currentGalleryIndex = (currentGalleryIndex + 1) % gallerySlides.length;
+            updateGallery();
         }
-        
-        // 页面可见性控制
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                clearInterval(autoSlideInterval);
+
+        function prevGallerySlide() {
+            currentGalleryIndex = (currentGalleryIndex - 1 + gallerySlides.length) % gallerySlides.length;
+            updateGallery();
+        }
+
+        // 按钮事件
+        nextGalleryBtn.addEventListener('click', nextGallerySlide);
+        prevGalleryBtn.addEventListener('click', prevGallerySlide);
+
+        // 指示器点击事件
+        Array.from(galleryIndicators).forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentGalleryIndex = index;
+                updateGallery();
+            });
+        });
+
+        // 图片放大镜效果
+        document.querySelectorAll('.gallery-slide img, .hero-image img').forEach(img => {
+            img.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width * 100;
+                const y = (e.clientY - rect.top) / rect.height * 100;
+                this.style.transformOrigin = `${x}% ${y}%`;
+                this.style.transform = 'scale(1.5)';
+            });
+            
+            img.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // 图片加载动画
+        document.querySelectorAll('img').forEach(img => {
+            if (img.complete) {
+                img.classList.add('loaded');
             } else {
-                startAutoSlide();
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                });
             }
         });
-        
-        // 初始化自动播放
-        startAutoSlide();
+
+        // 初始化画廊
+        updateGallery();
     </script>
 </body>
 </html>
-
